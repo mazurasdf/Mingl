@@ -58,3 +58,4 @@ C:\Users\Michael\Documents\Dojo\projects\Mingl\obj\Debug\netcoreapp3.1\staticweb
 C:\Users\Michael\Documents\Dojo\projects\Mingl\obj\Debug\netcoreapp3.1\Mingl.dll
 C:\Users\Michael\Documents\Dojo\projects\Mingl\obj\Debug\netcoreapp3.1\Mingl.pdb
 C:\Users\Michael\Documents\Dojo\projects\Mingl\obj\Debug\netcoreapp3.1\Mingl.genruntimeconfig.cache
+C:\Users\Michael\Documents\Dojo\projects\Mingl\obj\Debug\netcoreapp3.1\Razor\Views\Home\MatchingMain.cshtml.g.cs

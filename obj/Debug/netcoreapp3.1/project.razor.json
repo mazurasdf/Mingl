@@ -14435,6 +14435,11 @@
       "FilePath": "c:\\Users\\Michael\\Documents\\Dojo\\projects\\Mingl\\Views\\Shared\\Error.cshtml",
       "TargetPath": "Views\\Shared\\Error.cshtml",
       "FileKind": "mvc"
+    },
+    {
+      "FilePath": "c:\\Users\\Michael\\Documents\\Dojo\\projects\\Mingl\\Views\\Home\\MatchingMain.cshtml",
+      "TargetPath": "Views\\Home\\MatchingMain.cshtml",
+      "FileKind": "mvc"
     }
   ],
   "SerializationFormat": "0.2"
