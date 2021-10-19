@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Michael\\Documents\\Dojo\\projects\\Mingl\\Mingl.csproj": {}
+    "C:\\Users\\todda\\OneDrive\\Documents\\CodingDojo\\C#\\Mingl\\Mingl.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Michael\\Documents\\Dojo\\projects\\Mingl\\Mingl.csproj": {
+    "C:\\Users\\todda\\OneDrive\\Documents\\CodingDojo\\C#\\Mingl\\Mingl.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Michael\\Documents\\Dojo\\projects\\Mingl\\Mingl.csproj",
+        "projectUniqueName": "C:\\Users\\todda\\OneDrive\\Documents\\CodingDojo\\C#\\Mingl\\Mingl.csproj",
         "projectName": "Mingl",
-        "projectPath": "C:\\Users\\Michael\\Documents\\Dojo\\projects\\Mingl\\Mingl.csproj",
-        "packagesPath": "C:\\Users\\Michael\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Michael\\Documents\\Dojo\\projects\\Mingl\\obj\\",
+        "projectPath": "C:\\Users\\todda\\OneDrive\\Documents\\CodingDojo\\C#\\Mingl\\Mingl.csproj",
+        "packagesPath": "C:\\Users\\todda\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\todda\\OneDrive\\Documents\\CodingDojo\\C#\\Mingl\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Michael\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\todda\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
