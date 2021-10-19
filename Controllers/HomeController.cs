@@ -64,6 +64,35 @@ namespace Mingl.Controllers
 
         }
 
+        [HttpGet("matching/send/{id}")]
+        public IActionResult SendMatchRequest(int id)
+        {
+            //TODO testing with session, remove this later
+            // HttpContext.Session.GetInt32("LoggedUserId");
+            int loggedUserId = 6;
+
+            MatchRequest newMR = new MatchRequest();
+            newMR.SenderId = loggedUserId;
+            newMR.ReceiverId = id;
+
+            _context.Add(newMR);
+            _context.SaveChanges();
+
+            return RedirectToAction("MatchingMain");
+        }
+
+        [HttpGet("matching/pass/{id}")]
+        public IActionResult PassMatchRequest(int id)
+        {
+            //TODO testing with session, remove this later
+            // HttpContext.Session.GetInt32("LoggedUserId");
+            int loggedUserId = 6;
+
+            //do something with the pass
+
+            return RedirectToAction("MatchingMain");
+        }
+
         public IActionResult Privacy()
         {
             return View();
