@@ -5,3 +5,5 @@ bin/
 Migrations/
 
 appsettings.json
+
+Mingl.csproj
