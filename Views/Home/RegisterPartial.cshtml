@@ -57,15 +57,15 @@
             <span asp-validation-for="ProfilePicUrl" class="alert-danger"></span>
         </div>
         <h4>What type of date are you open to? Check all that apply</h4>
-        <input type="checkbox" name="DatePhysical" value="1">
+        <input type="checkbox" asp-for="DatePhysical">
         <label for="DatePhysical">Athletic Activity Date</label><br>
-        <input type="checkbox" name="DateCasual" value="1">
+        <input type="checkbox" asp-for="DateCasual">
         <label for="DateCasual">Casual Activity Date</label><br>
-        <input type="checkbox" name="DateFood" value="1">
+        <input type="checkbox" asp-for="DateFood">
         <label for="DateFood">Restaurant Date</label><br>
-        <input type="checkbox" name="DateCoffee" value="1">
+        <input type="checkbox" asp-for="DateCoffee">
         <label for="DateCoffee">Coffee Date</label><br>
-        <input type="checkbox" name="DateBar" value="1">
+        <input type="checkbox" asp-for="DateBar">
         <label for="DateBar">Bar Date</label><br>
 
         <input type="submit" value="Submit" class="btn btn-primary">
