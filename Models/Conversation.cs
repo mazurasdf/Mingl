@@ -19,7 +19,7 @@ namespace Mingl.Models
         [InverseProperty("ConversationsReceived")]
         public User Reveiver {get;set;}
 
-        public int Location1Id {get;set;}
+        public int? Location1Id {get;set;}
         [ForeignKey("Location1Id")]
         [InverseProperty("ConversationsInvolved1")]
         public Location Location1 {get;set;}

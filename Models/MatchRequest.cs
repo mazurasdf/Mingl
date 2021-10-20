@@ -16,7 +16,7 @@ namespace Mingl.Models
         public User Sender {get;set;}
         [ForeignKey("ReceiverId")]
         [InverseProperty("RequestsReceived")]
-        public User Reveiver {get;set;}
+        public User Receiver {get;set;}
 
         public DateTime CreatedAt {get;set;} = DateTime.Now;
         public DateTime UpdatedAt {get;set;} = DateTime.Now;

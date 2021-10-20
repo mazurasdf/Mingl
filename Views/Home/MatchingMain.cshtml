@@ -1,0 +1,29 @@
+matching main
+
+@* <h1>this user: @ViewBag.LoggedUser.Name @ViewBag.LoggedUser.Likes</h1> *@
+
+<h1>Rando:</h1>
+<img src="@ViewBag.RandomUser.ProfilePicUrl" alt="user profile image">
+<h2>Name: @ViewBag.RandomUser.Name</h2>
+<h2>Gender: @ViewBag.RandomUser.Gender</h2>
+<h2>Likes: @ViewBag.RandomUser.Likes</h2>
+<h2>Bio: @ViewBag.RandomUser.Bio</h2>
+<a href="/matching/send/@ViewBag.RandomUser.UserId" class="btn btn-success">yay</a>
+<a href="/matching/pass/@ViewBag.RandomUser.UserId" class="btn btn-danger">nay</a>
+<hr>
+
+<h1>Message requests:</h1>
+@{
+    foreach(MatchRequest mr in ViewBag.ReceivedRequests)
+    {
+        <hr>
+        <img src="@mr.Sender.ProfilePicUrl" alt="user profile image">
+        <h2>Name: @mr.Sender.Name</h2>
+        <h2>Gender: @mr.Sender.Gender</h2>
+        <h2>Likes: @mr.Sender.Likes</h2>
+        <h2>Bio: @mr.Sender.Bio</h2>
+        <a href="/matching/acceptRequest/@mr.Sender.UserId" class="btn btn-success">yay</a>
+        <a href="/matching/denyRequest/@mr.Sender.UserId" class="btn btn-danger">nay</a>
+<hr>
+    }
+}
