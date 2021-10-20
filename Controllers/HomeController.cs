@@ -30,7 +30,7 @@ namespace Mingl.Controllers
         {
             //TODO testing with session, remove this later
             // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 6;
+            int loggedUserId = 4;
 
             //viewbag logged user
             ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == loggedUserId);
@@ -51,10 +51,11 @@ namespace Mingl.Controllers
 
             var RandoList = _context.Users
                 .Where(user => user.UserId != loggedUserId)
-                .Where(user => user.PreferredUsers == OthersPrefer)
+                .Where(user => user.PreferredUsers == 1 || user.PreferredUsers == OthersPrefer)
                 .Where(user => UserPrefers == "Any" || user.Gender == UserPrefers);
             Random rand = new Random();
             int toSkip = rand.Next(RandoList.Count());
+            // Console.WriteLine(toSkip);
             //viewbag first random user who could match with logged user
             ViewBag.RandomUser = RandoList
                 .Skip(toSkip)
@@ -69,7 +70,7 @@ namespace Mingl.Controllers
         {
             //TODO testing with session, remove this later
             // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 6;
+            int loggedUserId = 4;
 
             MatchRequest newMR = new MatchRequest();
             newMR.SenderId = loggedUserId;
@@ -86,9 +87,43 @@ namespace Mingl.Controllers
         {
             //TODO testing with session, remove this later
             // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 6;
+            int loggedUserId = 4;
 
             //do something with the pass
+
+            return RedirectToAction("MatchingMain");
+        }
+
+        [HttpGet("matching/denyRequest/{id}")]
+        public IActionResult DenyRequest(int id)
+        {
+            Console.WriteLine("deny request");
+            int loggedUserId = 4;
+            MatchRequest deleteMe = _context.MatchRequests
+                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == loggedUserId);
+
+            _context.MatchRequests.Remove(deleteMe);
+            _context.SaveChanges();
+
+            return RedirectToAction("MatchingMain");
+        }
+
+        [HttpGet("matching/acceptRequest/{id}")]
+        public IActionResult AcceptRequest(int id)
+        {
+            Console.WriteLine("accept request");
+            int loggedUserId = 4;
+            MatchRequest deleteMe = _context.MatchRequests
+                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == loggedUserId);
+
+            _context.MatchRequests.Remove(deleteMe);
+            _context.SaveChanges();
+
+            Conversation newConvo = new Conversation();
+            newConvo.SenderId = id;
+            newConvo.ReceiverId = loggedUserId;
+            _context.Add(newConvo);
+            _context.SaveChanges();
 
             return RedirectToAction("MatchingMain");
         }
