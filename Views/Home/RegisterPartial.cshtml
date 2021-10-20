@@ -1,0 +1,73 @@
+@model User
+
+<div class="pageColumn">
+    <h1>Register</h1>
+    <form asp-action="RegisterUser" asp-controller-="Home" method="post">
+        <div class="form-group">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control">
+            <span asp-validation-for="Email" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control">
+            <span asp-validation-for="Name" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" class="form-control">
+            <span asp-validation-for="Password" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ConfirmPassword"></label>
+            <input asp-for="ConfirmPassword" class="form-control">
+            <span asp-validation-for="ConfirmPassword" class="alert-danger"></span> 
+        </div>
+        <div class="form-group">
+            <label asp-for="Gender"></label>
+            <select asp-for="Gender" class="form-control">
+                <option value="Non-Binary">Non-Binary</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </select>
+            <span asp-validation-for="Gender" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="PreferredUsers"></label>
+            <select asp-for="PreferredUsers" class="form-control">
+                <option value="1">Everyone</option>
+                <option value="2">Females</option>
+                <option value="3">Males</option>
+            </select>
+            <span asp-validation-for="PreferredUsers" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Likes"></label>
+            <input asp-for="Likes" class="form-control">
+            <span asp-validation-for="Likes" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Bio"></label>
+            <input asp-for="Bio" class="form-control">
+            <span asp-validation-for="Bio" class="alert-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ProfilePicUrl"></label>
+            <input asp-for="ProfilePicUrl" class="form-control">
+            <span asp-validation-for="ProfilePicUrl" class="alert-danger"></span>
+        </div>
+        <h4>What type of date are you open to? Check all that apply</h4>
+        <input type="checkbox" asp-for="DatePhysical">
+        <label for="DatePhysical">Athletic Activity Date</label><br>
+        <input type="checkbox" asp-for="DateCasual">
+        <label for="DateCasual">Casual Activity Date</label><br>
+        <input type="checkbox" asp-for="DateFood">
+        <label for="DateFood">Restaurant Date</label><br>
+        <input type="checkbox" asp-for="DateCoffee">
+        <label for="DateCoffee">Coffee Date</label><br>
+        <input type="checkbox" asp-for="DateBar">
+        <label for="DateBar">Bar Date</label><br>
+
+        <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+</div>
