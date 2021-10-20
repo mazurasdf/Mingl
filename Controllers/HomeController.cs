@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Mingl.Models;
 
 namespace Mingl.Contollers
@@ -42,16 +40,52 @@ namespace Mingl.Contollers
                 }
                 PasswordHasher<User> Hasher = new PasswordHasher<User>();
                 newUser.Password = Hasher.HashPassword(newUser, newUser.Password);
-
                 _context.Add(newUser);
                 _context.SaveChanges();
 
                 HttpContext.Session.SetInt32("LoggedUserId", newUser.UserId);
 
 
-                return RedirectToAction("dashboard");
+                return RedirectToAction("RegTwo");
             }
             return View("LoginReg");
+        }
+
+        [HttpGet("RegTwo")]
+        public IActionResult RegTwo()
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
+
+
+            return View();
+        }
+        [HttpPost("FinalizeUser")]
+        public IActionResult FinalizeUser(User incompleteUser)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
+            if(incompleteUser.ProfilePicUrl != null)
+            {
+                ViewBag.User.ProfilePicUrl = incompleteUser.ProfilePicUrl;
+            }
+            ViewBag.User.Gender = incompleteUser.Gender;
+            ViewBag.User.PreferredUsers = incompleteUser.PreferredUsers;
+            ViewBag.User.Likes = incompleteUser.Likes;
+            ViewBag.User.Bio = incompleteUser.Bio;
+            ViewBag.User.DatePhysical = incompleteUser.DatePhysical;
+            ViewBag.User.DateCasual = incompleteUser.DateCasual;
+            ViewBag.User.DateFood = incompleteUser.DateFood;
+            ViewBag.User.DateCoffee = incompleteUser.DateCoffee;
+            ViewBag.User.DateBar = incompleteUser.DateBar;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Dashboard");
         }
 
 
@@ -90,10 +124,57 @@ namespace Mingl.Contollers
             if(loggedUserId==null) return RedirectToAction("Index");
 
             ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
-
+            if(ViewBag.User.ProfilePicUrl =="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png")
+            {
+                return RedirectToAction("RegTwo");
+            }
 
             return View();
         }
+        [HttpGet("RegEdit")]
+        public IActionResult RegEdit()
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
+
+            return View("RegEdit");
+        }
+
+        [HttpPost("EditProfile")]
+        public IActionResult EditProfile(User editingUser)
+        {
+
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
+            if(_context.Users.Any(user => user.Email == editingUser.Email) && editingUser.Email != ViewBag.User.Email)
+                {
+                    ModelState.AddModelError("Email", "Email already in system!");
+                    return View("RegEdit");
+                }
+
+            ViewBag.User.Email = editingUser.Email;
+            ViewBag.User.Name = editingUser.Name;
+            ViewBag.User.ProfilePicUrl = editingUser.ProfilePicUrl;
+            ViewBag.User.Gender = editingUser.Gender;
+            ViewBag.User.PreferredUsers = editingUser.PreferredUsers;
+            ViewBag.User.Likes = editingUser.Likes;
+            ViewBag.User.Bio = editingUser.Bio;
+            ViewBag.User.DatePhysical = editingUser.DatePhysical;
+            ViewBag.User.DateCasual = editingUser.DateCasual;
+            ViewBag.User.DateFood = editingUser.DateFood;
+            ViewBag.User.DateCoffee = editingUser.DateCoffee;
+            ViewBag.User.DateBar = editingUser.DateBar;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Dashboard");
+        }
+
+
+
 
         [HttpGet("matching")]
         public IActionResult MatchingMain()
@@ -156,8 +237,7 @@ namespace Mingl.Contollers
         public IActionResult PassMatchRequest(int id)
         {
             //TODO testing with session, remove this later
-            // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 4;
+            HttpContext.Session.GetInt32("LoggedUserId");
 
             //do something with the pass
 
