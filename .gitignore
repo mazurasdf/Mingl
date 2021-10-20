@@ -7,3 +7,5 @@ Migrations/
 appsettings.json
 
 Mingl.csproj
+
+obj/
