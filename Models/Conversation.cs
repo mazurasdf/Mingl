@@ -12,6 +12,9 @@ namespace Mingl.Models
         public int SenderId {get;set;}
         public int ReceiverId {get;set;}
 
+        public bool SenderReady {get;set;} = false;
+        public bool ReceiverReady {get;set;} = false;
+
         [ForeignKey("SenderId")]
         [InverseProperty("ConversationsSent")]
         public User Sender {get;set;}
