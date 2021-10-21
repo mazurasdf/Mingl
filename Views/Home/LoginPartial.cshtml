@@ -1,19 +1,19 @@
 @model LoginUser
 
 <div class="pageColumn">
-    <h2>Login</h2>
+    <h2 class="fancyFont2">Login</h2>
         <form asp-action="Login" asp-controller="Home" method="post">
             <div class="form-group">
                 <label asp-for="LoginEmail">Email</label>
-                <input asp-for="LoginEmail" class="form-control">
+                <input id="experiment" asp-for="LoginEmail" class="form-control">
                 <span class="alert-danger" asp-validation-for="LoginEmail"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LoginPassword">Password</label>
-                <input asp-for="LoginPassword" class="form-control">
+                <input id="experiment" asp-for="LoginPassword" class="form-control">
                 <span class="alert-danger" asp-validation-for="LoginPassword"></span>
             </div>  
-            <input type="submit" class="btn btn-primary">
+            <input type="submit" value="Let's Mingl" id="coolbutton" class="btn btn-primary">
         </form>
     </div>
 </div>

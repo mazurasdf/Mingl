@@ -4,13 +4,13 @@
 }
 @model User
 
-<a href="/logout" class="btn btn-dark">Logout</a>
-<h1>Hey, @ViewBag.User.Name! One more step to finalize your profile!</h1>
+<a href="/logout"  class="btn btn-dark">Logout</a>
+<h1 class="fancyFont2">Hey, @ViewBag.User.Name! One more step to finalize your profile!</h1>
 
     <form asp-action="FinalizeUser" asp-controller-="Home" method="post">
         <div class="form-group">
             <label asp-for="Gender"></label>
-            <select asp-for="Gender" class="form-control">
+            <select  asp-for="Gender" class="form-control">
                 <option value="Non-Binary">Non-Binary</option>
                 <option value="Female">Female</option>
                 <option value="Male">Male</option>
@@ -19,7 +19,7 @@
         </div>
         <div class="form-group">
             <label asp-for="PreferredUsers"></label>
-            <select asp-for="PreferredUsers" class="form-control">
+            <select  asp-for="PreferredUsers" class="form-control">
                 <option value="1">Everyone</option>
                 <option value="2">Females</option>
                 <option value="3">Males</option>
@@ -28,30 +28,30 @@
         </div>
         <div class="form-group">
             <label asp-for="Likes"></label>
-            <input asp-for="Likes" class="form-control">
+            <input id="experiment" asp-for="Likes" class="form-control">
             <span asp-validation-for="Likes" class="alert-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Bio"></label>
-            <input asp-for="Bio" class="form-control">
+            <input id="experiment" asp-for="Bio" class="form-control">
             <span asp-validation-for="Bio" class="alert-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="ProfilePicUrl"></label>
-            <input asp-for="ProfilePicUrl" class="form-control">
+            <input id="experiment" asp-for="ProfilePicUrl" class="form-control">
             <span asp-validation-for="ProfilePicUrl" class="alert-danger"></span>
         </div>
         <h4>What type of date are you open to? Check all that apply</h4>
-        <input type="checkbox" asp-for="DatePhysical">
+        <input  type="checkbox" asp-for="DatePhysical">
         <label for="DatePhysical">Athletic Activity Date</label><br>
-        <input type="checkbox" asp-for="DateCasual">
+        <input  type="checkbox" asp-for="DateCasual">
         <label for="DateCasual">Casual Activity Date</label><br>
-        <input type="checkbox" asp-for="DateFood">
+        <input  type="checkbox" asp-for="DateFood">
         <label for="DateFood">Restaurant Date</label><br>
-        <input type="checkbox" asp-for="DateCoffee">
+        <input  type="checkbox" asp-for="DateCoffee">
         <label for="DateCoffee">Coffee Date</label><br>
-        <input type="checkbox" asp-for="DateBar">
+        <input  type="checkbox" asp-for="DateBar">
         <label for="DateBar">Bar Date</label><br>
 
-        <input type="submit" value="Submit" class="btn btn-primary">
+        <input id="coolbutton"  value="Let's Mingl" type="submit" class="btn btn-primary">
     </form>
