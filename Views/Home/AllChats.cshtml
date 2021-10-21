@@ -1,13 +1,54 @@
-<h2>your current chats:</h2>
+<a href="/logout"  class="btn btn-dark">Logout</a>
+<a href="/matching"  class="btn btn-info">Home</a>
 
-<ul>
+<h2 class="fancyFont2">Current Convos:</h2>
+
+<div class="shadow overflow-auto h-20 rounded">
     @{
         foreach(Conversation conv in ViewBag.Conversations)
         {
             string name = conv.SenderId == ViewBag.User.UserId ? conv.Receiver.Name : conv.Sender.Name;
+            string pic = conv.SenderId == ViewBag.User.UserId ? conv.Receiver.ProfilePicUrl : conv.Sender.ProfilePicUrl;
             Message latest = conv.Messages.OrderByDescending(mes => mes.CreatedAt).FirstOrDefault();
             string latestText = latest == null ? "click to send message!" : latest.Text;
-            <li><a href="/chats/@conv.ConversationId">@name</a> last message: "@latestText"</li>
+            if(@latestText != "click to send message!")
+            {
+                <div class="ml-3 mt-4">
+                    <h4><a href="/chats/@conv.ConversationId">@name</a>"@latestText"</h4>
+                    <img class="h-2" src="@pic" alt="profpic">
+                    <a href="/deleteMatch/@conv.ConversationId">Delete Match</a>
+                    @* NEEDS WORK^^^ *@
+
+                    <hr>
+                </div>
+            }
         }
     }
-</ul>
+</div>
+<h2 class="fancyFont2">New Matches:</h2>
+
+<div class="shadow overflow-auto h-20 rounded">
+    @{
+        foreach(Conversation conv in ViewBag.Conversations)
+        {
+            string name = conv.SenderId == ViewBag.User.UserId ? conv.Receiver.Name : conv.Sender.Name;
+            string pic = conv.SenderId == ViewBag.User.UserId ? conv.Receiver.ProfilePicUrl : conv.Sender.ProfilePicUrl;
+            Message latest = conv.Messages.OrderByDescending(mes => mes.CreatedAt).FirstOrDefault();
+            string latestText = latest == null ? "click to send message!" : latest.Text;
+            if(@latestText == "click to send message!")
+            {
+                <div class="ml-3 mt-4">
+                    <h1><a href="/chats/@conv.ConversationId">@name</a></h1>
+                    <img src="@pic" alt="profpic">
+                    <a href="/deleteMatch/@conv.ConversationId">Delete Match</a>
+                    @* NEEDS WORK^^^ *@
+
+                    <hr>
+                </div>
+            }
+            else{
+                <div></div>
+            }
+        }
+    }
+</div>
