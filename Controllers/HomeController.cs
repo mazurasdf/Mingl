@@ -357,10 +357,10 @@ namespace Mingl.Contollers
 
 
         [HttpGet("/deleteMatch/{ConversationId}")]
-        public IActionResult deleteMatch(int DeletedConvoId)
+        public IActionResult deleteMatch(int ConversationId)
         {
             Conversation del = _context.Conversations
-                .FirstOrDefault(conv => conv.ConversationId == DeletedConvoId);
+                .FirstOrDefault(conv => conv.ConversationId == ConversationId);
             _context.Conversations.Remove(del);
             _context.SaveChanges();
             return RedirectToAction("AllChats");
