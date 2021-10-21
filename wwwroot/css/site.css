@@ -1,5 +1,43 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+#experiment{
+  width: 60%;
+  transition-property: background-color, width;
+  transition-duration: .8s;
+  transition-timing-function: ease-in;
+}
+
+#experiment:focus{
+  background-color: #ed1f6a;
+  color: white;
+  width: 90%;
+}
+
+.fancyFont{
+  font-family: 'Festive', cursive;
+}
+
+.fancyFont2{
+  font-family: 'Lobster', cursive;
+}
+body{
+  background-image: url("https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80");
+  background-size: cover;
+}
+#coolbutton{
+  font-family: 'Lobster', cursive;
+  background-color: #ed1f6a;
+  color: white;
+  transition-property: background-color;
+  transition-duration: .6s;
+  transition-timing-function: ease-in;
+}
+
+#coolbutton:hover{
+  background-color: #7d022f;
+}
+
+
 .pageColumn{
   width: 40%;
 }
@@ -8,6 +46,8 @@ a.navbar-brand {
   text-align: center;
   word-break: break-all;
 }
+
+
 
 /* Provide sufficient contrast against white background */
 a {
@@ -63,6 +103,7 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  font-family: 'Ubuntu', sans-serif;
 }
 .footer {
   position: absolute;

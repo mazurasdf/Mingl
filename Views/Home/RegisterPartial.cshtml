@@ -1,29 +1,37 @@
 @model User
 
 <div class="pageColumn">
-    <h1>Register</h1>
+    <h2 class="fancyFont2">Register</h2>
     <form asp-action="RegisterUser" asp-controller-="Home" method="post">
         <div class="form-group">
-            <label asp-for="Email"></label>
-            <input asp-for="Email" class="form-control">
+            <label class="" asp-for="Email"></label>
+            <input id="experiment" asp-for="Email" class="form-control">
             <span asp-validation-for="Email" class="alert-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Name"></label>
-            <input asp-for="Name" class="form-control">
+            <input  id="experiment" asp-for="Name" class="form-control">
             <span asp-validation-for="Name" class="alert-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="Password"></label>
-            <input asp-for="Password" class="form-control">
+            <input id="experiment" asp-for="Password" class="form-control">
             <span asp-validation-for="Password" class="alert-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="ConfirmPassword"></label>
-            <input asp-for="ConfirmPassword" class="form-control">
+            <input id="experiment" asp-for="ConfirmPassword" class="form-control">
             <span asp-validation-for="ConfirmPassword" class="alert-danger"></span> 
         </div>
-        <div class="form-group">
+
+
+        <input type="hidden" name="Gender" value="Non-Binary">
+        <input type="hidden" name="PreferredUsers" value="1">
+        <input type="hidden" name="ProfilePicUrl" value="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png">
+
+
+
+        @* <div class="form-group">
             <label asp-for="Gender"></label>
             <select asp-for="Gender" class="form-control">
                 <option value="Non-Binary">Non-Binary</option>
@@ -66,8 +74,8 @@
         <input type="checkbox" asp-for="DateCoffee">
         <label for="DateCoffee">Coffee Date</label><br>
         <input type="checkbox" asp-for="DateBar">
-        <label for="DateBar">Bar Date</label><br>
+        <label for="DateBar">Bar Date</label><br> *@
 
-        <input type="submit" value="Submit" class="btn btn-primary">
+        <input type="submit"value="Let's Mingl" id="coolbutton"value="Submit" class="btn btn-primary">
     </form>
 </div>
