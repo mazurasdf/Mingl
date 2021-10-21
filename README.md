@@ -10,6 +10,8 @@ git pull
 
 git checkout NAMEOFBRANCH
 
+(if needed) drop schema in workbench
+
 migrate changes
 
 start working!

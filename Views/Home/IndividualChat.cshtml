@@ -1,0 +1,20 @@
+your individual chat here
+
+@model Message
+
+<ul>
+    @{
+        foreach(Message mess in ViewBag.ChatMessages)
+        {
+            string who = mess.UserId == ViewBag.User.UserId ? "you" : mess.Sender.Name;
+            <li>@who: @mess.Text</li>
+        }
+    }
+</ul>
+
+<form asp-action="SendChat" asp-controller="Home" method="post">
+    <input type="hidden" asp-for="ConversationId" value="@ViewBag.Conversation.ConversationId">
+    <input type="hidden" asp-for="UserId" value="@ViewBag.User.UserId">
+
+    <input asp-for="Text" class="form-control">
+</form>

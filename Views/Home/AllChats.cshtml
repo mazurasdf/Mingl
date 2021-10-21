@@ -1,0 +1,13 @@
+<h2>your current chats:</h2>
+
+<ul>
+    @{
+        foreach(Conversation conv in ViewBag.Conversations)
+        {
+            string name = conv.SenderId == ViewBag.User.UserId ? conv.Receiver.Name : conv.Sender.Name;
+            Message latest = conv.Messages.OrderByDescending(mes => mes.CreatedAt).FirstOrDefault();
+            string latestText = latest == null ? "click to send message!" : latest.Text;
+            <li><a href="/chats/@conv.ConversationId">@name</a> last message: "@latestText"</li>
+        }
+    }
+</ul>

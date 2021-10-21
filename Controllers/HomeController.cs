@@ -85,7 +85,7 @@ namespace Mingl.Contollers
 
             _context.SaveChanges();
 
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("MatchingMain");
         }
 
 
@@ -112,25 +112,11 @@ namespace Mingl.Contollers
                 }
 
                 HttpContext.Session.SetInt32("LoggedUserId", userInDb.UserId);
-                return RedirectToAction("dashboard");
+                return RedirectToAction("MatchingMain");
             }
             return View("LoginReg");
         }
 
-        [HttpGet("/dashboard")]
-        public IActionResult Dashboard()
-        {
-            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
-            if(loggedUserId==null) return RedirectToAction("Index");
-
-            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
-            if(ViewBag.User.ProfilePicUrl =="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png")
-            {
-                return RedirectToAction("RegTwo");
-            }
-
-            return View();
-        }
         [HttpGet("RegEdit")]
         public IActionResult RegEdit()
         {
@@ -179,17 +165,16 @@ namespace Mingl.Contollers
         [HttpGet("matching")]
         public IActionResult MatchingMain()
         {
-            //TODO testing with session, remove this later
-            // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
 
             //viewbag logged user
-            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == loggedUserId);
+            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == (int)loggedUserId);
             
             //viewbag users who have sent a match request
             ViewBag.ReceivedRequests = _context.MatchRequests
                 .Include(mr => mr.Sender)
-                .Where(mr => mr.ReceiverId == loggedUserId)
+                .Where(mr => mr.ReceiverId == (int)loggedUserId)
                 .ToList();
             
             //search for random user who is looking for gender that logged user identifies as
@@ -206,7 +191,6 @@ namespace Mingl.Contollers
                 .Where(user => UserPrefers == "Any" || user.Gender == UserPrefers);
             Random rand = new Random();
             int toSkip = rand.Next(RandoList.Count());
-            // Console.WriteLine(toSkip);
             //viewbag first random user who could match with logged user
             ViewBag.RandomUser = RandoList
                 .Skip(toSkip)
@@ -221,10 +205,11 @@ namespace Mingl.Contollers
         {
             //TODO testing with session, remove this later
             // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
 
             MatchRequest newMR = new MatchRequest();
-            newMR.SenderId = loggedUserId;
+            newMR.SenderId = (int)loggedUserId;
             newMR.ReceiverId = id;
 
             _context.Add(newMR);
@@ -236,8 +221,8 @@ namespace Mingl.Contollers
         [HttpGet("matching/pass/{id}")]
         public IActionResult PassMatchRequest(int id)
         {
-            //TODO testing with session, remove this later
-            HttpContext.Session.GetInt32("LoggedUserId");
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
 
             //do something with the pass
 
@@ -247,10 +232,11 @@ namespace Mingl.Contollers
         [HttpGet("matching/denyRequest/{id}")]
         public IActionResult DenyRequest(int id)
         {
-            Console.WriteLine("deny request");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
             MatchRequest deleteMe = _context.MatchRequests
-                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == loggedUserId);
+                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == (int)loggedUserId);
 
             _context.MatchRequests.Remove(deleteMe);
             _context.SaveChanges();
@@ -261,22 +247,89 @@ namespace Mingl.Contollers
         [HttpGet("matching/acceptRequest/{id}")]
         public IActionResult AcceptRequest(int id)
         {
-            Console.WriteLine("accept request");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
             MatchRequest deleteMe = _context.MatchRequests
-                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == loggedUserId);
+                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == (int)loggedUserId);
 
             _context.MatchRequests.Remove(deleteMe);
             _context.SaveChanges();
 
             Conversation newConvo = new Conversation();
             newConvo.SenderId = id;
-            newConvo.ReceiverId = loggedUserId;
+            newConvo.ReceiverId = (int)loggedUserId;
             _context.Add(newConvo);
             _context.SaveChanges();
 
             return RedirectToAction("MatchingMain");
-        }        
+        }
+
+        [HttpGet("chats")]
+        public IActionResult AllChats()
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            ViewBag.Conversations = _context.Conversations
+                .Include(conv => conv.Sender)
+                .Include(conv => conv.Receiver)
+                .Include(conv => conv.Messages)
+                .Where(conv => conv.SenderId == loggedUserId || conv.ReceiverId == loggedUserId)
+                .ToList();
+
+            ViewBag.User = _context.Users
+                .FirstOrDefault(user => user.UserId == loggedUserId);
+
+            return View();
+        }     
+
+        [HttpGet("chats/{id}")]
+        public IActionResult IndividualChat(int id)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            Conversation thisChat = _context.Conversations
+                .FirstOrDefault(conv => conv.ConversationId == id);
+
+            //if chat exists and logged user is one of the participants
+            if(thisChat != null && (thisChat.ReceiverId == loggedUserId || thisChat.SenderId == loggedUserId))
+            {
+                ViewBag.User = _context.Users
+                    .FirstOrDefault(user => user.UserId == loggedUserId);
+
+                ViewBag.Conversation = thisChat;
+
+                ViewBag.ChatMessages = _context.Messages
+                    .Include(mess => mess.Sender)
+                    .Where(mess => mess.ConversationId == id)
+                    .ToList();
+
+                return View();
+            }
+
+            return RedirectToAction("AllChats");
+        }
+
+        [HttpPost("chats/send")]
+        public IActionResult SendChat(Message newMessage)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            Conversation thisChat = _context.Conversations
+                .FirstOrDefault(conv => conv.ConversationId == newMessage.ConversationId);
+
+            //if chat exists and logged user is one of the participants
+            if(thisChat != null && (thisChat.ReceiverId == loggedUserId || thisChat.SenderId == loggedUserId))
+            {
+                _context.Add(newMessage);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("IndividualChat", new {id = newMessage.ConversationId});
+        }   
 
         [HttpGet("logout")]
         public IActionResult Logout()
