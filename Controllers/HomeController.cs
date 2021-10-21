@@ -331,6 +331,28 @@ namespace Mingl.Contollers
             return RedirectToAction("IndividualChat", new {id = newMessage.ConversationId});
         }   
 
+        [HttpGet("chats/{id}/ready")]
+        public IActionResult ReadyToMingl(int id)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            Conversation thisChat = _context.Conversations
+                .FirstOrDefault(conv => conv.ConversationId == id);
+
+            if(thisChat.ReceiverId == loggedUserId)
+            {
+                thisChat.ReceiverReady = true;
+            }
+            else if(thisChat.SenderId == loggedUserId)
+            {
+                thisChat.SenderReady = true;
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("IndividualChat", new {id = id});
+        }
+
         [HttpGet("logout")]
         public IActionResult Logout()
         {

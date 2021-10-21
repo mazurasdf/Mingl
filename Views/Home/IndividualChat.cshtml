@@ -2,6 +2,24 @@ your individual chat here
 
 @model Message
 
+@{
+    if(ViewBag.User.UserId == ViewBag.Conversation.SenderId && !ViewBag.Conversation.SenderReady)
+    {
+        <a href="/chats/@ViewBag.Conversation.ConversationId/ready" class="btn btn-sm btn-warning">ready to mingl</a>
+    }
+    else if(ViewBag.User.UserId == ViewBag.Conversation.ReceiverId && !ViewBag.Conversation.ReceiverReady)
+    {
+        <a href="/chats/@ViewBag.Conversation.ConversationId/ready" class="btn btn-sm btn-warning">ready to mingl</a>
+    }
+}
+
+@{
+    if(ViewBag.Conversation.SenderReady && ViewBag.Conversation.ReceiverReady)
+    {
+        <span>location ready to be shared</span>
+    }
+}
+
 <ul>
     @{
         foreach(Message mess in ViewBag.ChatMessages)
