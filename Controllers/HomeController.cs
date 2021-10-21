@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
 using Mingl.Models;
 
 namespace Mingl.Contollers
@@ -49,7 +47,7 @@ namespace Mingl.Contollers
                 HttpContext.Session.SetInt32("LoggedUserId", newUser.UserId);
 
 
-                return RedirectToAction("dashboard");
+                return RedirectToAction("MatchingMain");
             }
             return View("LoginReg");
         }
@@ -78,7 +76,7 @@ namespace Mingl.Contollers
                 }
 
                 HttpContext.Session.SetInt32("LoggedUserId", userInDb.UserId);
-                return RedirectToAction("dashboard");
+                return RedirectToAction("MatchingMain");
             }
             return View("LoginReg");
         }
@@ -89,7 +87,7 @@ namespace Mingl.Contollers
             int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
             if(loggedUserId==null) return RedirectToAction("Index");
 
-            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
+            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == (int)loggedUserId);
 
 
             return View();
@@ -98,17 +96,16 @@ namespace Mingl.Contollers
         [HttpGet("matching")]
         public IActionResult MatchingMain()
         {
-            //TODO testing with session, remove this later
-            // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
 
             //viewbag logged user
-            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == loggedUserId);
+            ViewBag.LoggedUser = _context.Users.FirstOrDefault(user => user.UserId == (int)loggedUserId);
             
             //viewbag users who have sent a match request
             ViewBag.ReceivedRequests = _context.MatchRequests
                 .Include(mr => mr.Sender)
-                .Where(mr => mr.ReceiverId == loggedUserId)
+                .Where(mr => mr.ReceiverId == (int)loggedUserId)
                 .ToList();
             
             //search for random user who is looking for gender that logged user identifies as
@@ -125,7 +122,6 @@ namespace Mingl.Contollers
                 .Where(user => UserPrefers == "Any" || user.Gender == UserPrefers);
             Random rand = new Random();
             int toSkip = rand.Next(RandoList.Count());
-            // Console.WriteLine(toSkip);
             //viewbag first random user who could match with logged user
             ViewBag.RandomUser = RandoList
                 .Skip(toSkip)
@@ -140,10 +136,11 @@ namespace Mingl.Contollers
         {
             //TODO testing with session, remove this later
             // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
 
             MatchRequest newMR = new MatchRequest();
-            newMR.SenderId = loggedUserId;
+            newMR.SenderId = (int)loggedUserId;
             newMR.ReceiverId = id;
 
             _context.Add(newMR);
@@ -155,9 +152,8 @@ namespace Mingl.Contollers
         [HttpGet("matching/pass/{id}")]
         public IActionResult PassMatchRequest(int id)
         {
-            //TODO testing with session, remove this later
-            // HttpContext.Session.GetInt32("LoggedUserId");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
 
             //do something with the pass
 
@@ -167,10 +163,11 @@ namespace Mingl.Contollers
         [HttpGet("matching/denyRequest/{id}")]
         public IActionResult DenyRequest(int id)
         {
-            Console.WriteLine("deny request");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
             MatchRequest deleteMe = _context.MatchRequests
-                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == loggedUserId);
+                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == (int)loggedUserId);
 
             _context.MatchRequests.Remove(deleteMe);
             _context.SaveChanges();
@@ -181,17 +178,18 @@ namespace Mingl.Contollers
         [HttpGet("matching/acceptRequest/{id}")]
         public IActionResult AcceptRequest(int id)
         {
-            Console.WriteLine("accept request");
-            int loggedUserId = 4;
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
             MatchRequest deleteMe = _context.MatchRequests
-                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == loggedUserId);
+                .FirstOrDefault(mr => mr.SenderId == id && mr.ReceiverId == (int)loggedUserId);
 
             _context.MatchRequests.Remove(deleteMe);
             _context.SaveChanges();
 
             Conversation newConvo = new Conversation();
             newConvo.SenderId = id;
-            newConvo.ReceiverId = loggedUserId;
+            newConvo.ReceiverId = (int)loggedUserId;
             _context.Add(newConvo);
             _context.SaveChanges();
 
