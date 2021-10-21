@@ -17,7 +17,7 @@ namespace Mingl.Models
         public User Sender {get;set;}
         [ForeignKey("ReceiverId")]
         [InverseProperty("ConversationsReceived")]
-        public User Reveiver {get;set;}
+        public User Receiver {get;set;}
 
         public int? Location1Id {get;set;}
         [ForeignKey("Location1Id")]
