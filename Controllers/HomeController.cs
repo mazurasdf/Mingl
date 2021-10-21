@@ -194,7 +194,73 @@ namespace Mingl.Contollers
             _context.SaveChanges();
 
             return RedirectToAction("MatchingMain");
-        }        
+        }
+
+        [HttpGet("chats")]
+        public IActionResult AllChats()
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            ViewBag.Conversations = _context.Conversations
+                .Include(conv => conv.Sender)
+                .Include(conv => conv.Receiver)
+                .Include(conv => conv.Messages)
+                .Where(conv => conv.SenderId == loggedUserId || conv.ReceiverId == loggedUserId)
+                .ToList();
+
+            ViewBag.User = _context.Users
+                .FirstOrDefault(user => user.UserId == loggedUserId);
+
+            return View();
+        }     
+
+        [HttpGet("chats/{id}")]
+        public IActionResult IndividualChat(int id)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            Conversation thisChat = _context.Conversations
+                .FirstOrDefault(conv => conv.ConversationId == id);
+
+            //if chat exists and logged user is one of the participants
+            if(thisChat != null && (thisChat.ReceiverId == loggedUserId || thisChat.SenderId == loggedUserId))
+            {
+                ViewBag.User = _context.Users
+                    .FirstOrDefault(user => user.UserId == loggedUserId);
+
+                ViewBag.Conversation = thisChat;
+
+                ViewBag.ChatMessages = _context.Messages
+                    .Include(mess => mess.Sender)
+                    .Where(mess => mess.ConversationId == id)
+                    .ToList();
+
+                return View();
+            }
+
+            return RedirectToAction("AllChats");
+        }
+
+        [HttpPost("chats/send")]
+        public IActionResult SendChat(Message newMessage)
+        {
+            int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
+            if(loggedUserId==null) return RedirectToAction("Index");
+
+            Conversation thisChat = _context.Conversations
+                .FirstOrDefault(conv => conv.ConversationId == newMessage.ConversationId);
+
+            //if chat exists and logged user is one of the participants
+            if(thisChat != null && (thisChat.ReceiverId == loggedUserId || thisChat.SenderId == loggedUserId))
+            {
+                _context.Add(newMessage);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("IndividualChat", new {id = newMessage.ConversationId});
+        }   
 
         [HttpGet("logout")]
         public IActionResult Logout()
