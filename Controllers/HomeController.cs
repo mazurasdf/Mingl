@@ -259,6 +259,41 @@ namespace Mingl.Contollers
             Conversation newConvo = new Conversation();
             newConvo.SenderId = id;
             newConvo.ReceiverId = (int)loggedUserId;
+
+            User SenderUser = _context.Users
+                .FirstOrDefault(user => user.UserId == id);
+            User RecieverUser = _context.Users
+                .FirstOrDefault(user => user.UserId == (int)loggedUserId);
+
+            List<int> commonDates = new List<int>();
+            if(SenderUser.DatePhysical && RecieverUser.DatePhysical)
+            {
+                commonDates.Add(1);
+            }
+            else if(SenderUser.DateCasual && RecieverUser.DateCasual)
+            {
+                commonDates.Add(2);
+            }
+            else if(SenderUser.DateFood && RecieverUser.DateFood)
+            {
+                commonDates.Add(3);
+            }
+            else if(SenderUser.DateCoffee && RecieverUser.DateCoffee)
+            {
+                commonDates.Add(4);
+            }
+            else if(SenderUser.DateBar && RecieverUser.DateBar)
+            {
+                commonDates.Add(5);
+            }
+
+            Location chosenLocation = _context.Locations
+                .FirstOrDefault(loc => commonDates.Contains(loc.DateType));
+
+            // random
+            // if(chosenLocation == ())
+
+            newConvo.Location1Id = chosenLocation.LocationId;
             _context.Add(newConvo);
             _context.SaveChanges();
 
@@ -300,6 +335,9 @@ namespace Mingl.Contollers
                     .FirstOrDefault(user => user.UserId == loggedUserId);
 
                 ViewBag.Conversation = thisChat;
+                ViewBag.ConvoLoc = _context.Conversations
+                    .Include(con => con.Location1)
+                    .FirstOrDefault(con => con.ConversationId == thisChat.ConversationId);
 
                 ViewBag.ChatMessages = _context.Messages
                     .Include(mess => mess.Sender)

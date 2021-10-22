@@ -17,7 +17,10 @@
     @{
         if(ViewBag.Conversation.SenderReady && ViewBag.Conversation.ReceiverReady)
         {
-            <h1>YOU SHOULD GO TO WHIRLYBALL!!!! </h1>
+            <h2 class="fancyFont2">DATE IDEA!!!! <br> <span border class="border border-dark">
+            <span class="fancyFont2 text-danger">@ViewBag.ConvoLoc.Location1.Name</span> in @ViewBag.ConvoLoc.Location1.Neighborhood <br> 
+            </span> <span class="fancyFont2 text-secondary">@ViewBag.ConvoLoc.Location1.Address</span> 
+            </h2>
         }
     }
 
