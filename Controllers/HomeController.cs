@@ -9,18 +9,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using Mingl.Models;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Mingl.Contollers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IWebHostEnvironment webHostEnvironment;  
         private MyContext _context;
 
-        public HomeController(ILogger<HomeController> logger, MyContext context)
+        public HomeController(MyContext context, IWebHostEnvironment hostEnvironment)
         {
-            _logger = logger;
             _context = context;
+            webHostEnvironment = hostEnvironment;
         }
 
         public IActionResult Index()
@@ -63,30 +65,53 @@ namespace Mingl.Contollers
             return View();
         }
         [HttpPost("FinalizeUser")]
-        public IActionResult FinalizeUser(User incompleteUser)
+        public async Task<IActionResult> FinalizeUser(ViewUser incompleteUser)
         {
+            //shoutout to https://www.c-sharpcorner.com/article/upload-and-display-image-in-asp-net-core-3-1/
+            //shoutout to Christina Applegate!
             int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
             if(loggedUserId==null) return RedirectToAction("Index");
 
-            ViewBag.User = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
-            if(incompleteUser.ProfilePicUrl != null)
-            {
-                ViewBag.User.ProfilePicUrl = incompleteUser.ProfilePicUrl;
-            }
-            ViewBag.User.Gender = incompleteUser.Gender;
-            ViewBag.User.PreferredUsers = incompleteUser.PreferredUsers;
-            ViewBag.User.Likes = incompleteUser.Likes;
-            ViewBag.User.Bio = incompleteUser.Bio;
-            ViewBag.User.DatePhysical = incompleteUser.DatePhysical;
-            ViewBag.User.DateCasual = incompleteUser.DateCasual;
-            ViewBag.User.DateFood = incompleteUser.DateFood;
-            ViewBag.User.DateCoffee = incompleteUser.DateCoffee;
-            ViewBag.User.DateBar = incompleteUser.DateBar;
+            User thisUser = _context.Users.FirstOrDefault(use => use.UserId == loggedUserId);
+            
+            //profile pic upload
+            thisUser.ProfilePicUrl = UploadedFile(incompleteUser);
 
-            _context.SaveChanges();
+            thisUser.Gender = incompleteUser.Gender;
+            thisUser.PreferredUsers = incompleteUser.PreferredUsers;
+            thisUser.Likes = incompleteUser.Likes;
+            thisUser.Bio = incompleteUser.Bio;
+            thisUser.DatePhysical = incompleteUser.DatePhysical;
+            thisUser.DateCasual = incompleteUser.DateCasual;
+            thisUser.DateFood = incompleteUser.DateFood;
+            thisUser.DateCoffee = incompleteUser.DateCoffee;
+            thisUser.DateBar = incompleteUser.DateBar;
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("MatchingMain");
         }
+
+        private string UploadedFile(ViewUser model)  
+        {  
+            string uniqueFileName = null;  
+  
+            if (model.ProfilePicUrl != null)  
+            {  
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");  
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfilePicUrl.FileName;  
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);  
+                using (var fileStream = new FileStream(filePath, FileMode.Create))  
+                {  
+                    model.ProfilePicUrl.CopyTo(fileStream);  
+                }  
+            }
+            else
+            {
+                Console.WriteLine("no image?!?!");
+            }  
+            return uniqueFileName;  
+        } 
 
 
         [HttpPost("login")]
@@ -163,7 +188,7 @@ namespace Mingl.Contollers
 
 
         [HttpGet("matching")]
-        public IActionResult MatchingMain()
+        public async Task<IActionResult> MatchingMain()
         {
             int? loggedUserId = HttpContext.Session.GetInt32("LoggedUserId");
             if(loggedUserId==null) return RedirectToAction("Index");
