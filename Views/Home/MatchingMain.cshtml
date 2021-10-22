@@ -16,7 +16,17 @@
             {
                 <div id="matchContentFlex">
                     <div>
-                        <img src="@ViewBag.RandomUser.ProfilePicUrl" alt="user profile image">
+                        @{
+                            //legacy images won't break because of this code
+                            if(ViewBag.RandomUser.ProfilePicUrl.Substring(0, 4) == "http" || ViewBag.RandomUser.ProfilePicUrl.Substring(0, 4) == "data")
+                            {
+                                <img src="@ViewBag.RandomUser.ProfilePicUrl" alt="user profile image">
+                            }
+                            else
+                            {
+                                <img src="~/images/@ViewBag.RandomUser.ProfilePicUrl" alt="user profile image">
+                            }
+                        }
                         <h2><span style="color: #240652;" class="fancyFont2">Name: </span><span class="fancyFont3">@ViewBag.RandomUser.Name</span></h2>
                         <h2><span style="color: #240652;" class="fancyFont2">Gender: </span><span class="fancyFont3">@ViewBag.RandomUser.Gender</span></h2>
                     </div>
