@@ -1,5 +1,12 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+.profpic{
+  height: 25vh;
+  width: auto;
+}
+.shadow{
+  background-color: rgba(213, 176, 214, .4);
+}
 #experiment{
   width: 60%;
   transition-property: background-color, width;
