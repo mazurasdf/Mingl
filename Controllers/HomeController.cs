@@ -287,13 +287,19 @@ namespace Mingl.Contollers
                 commonDates.Add(5);
             }
 
-            Location chosenLocation = _context.Locations
-                .FirstOrDefault(loc => commonDates.Contains(loc.DateType));
+            var chosenLocation = _context.Locations
+                .Where(loc => commonDates.Contains(loc.DateType));
 
-            // random
+            Random rand = new Random();
+            int toSkip = rand.Next(chosenLocation.Count());
+            ViewBag.RandomDate = chosenLocation
+                .Skip(toSkip)
+                .FirstOrDefault();
+
+
             // if(chosenLocation == ())
 
-            newConvo.Location1Id = chosenLocation.LocationId;
+            newConvo.Location1Id = ViewBag.RandomDate.LocationId;
             _context.Add(newConvo);
             _context.SaveChanges();
 
