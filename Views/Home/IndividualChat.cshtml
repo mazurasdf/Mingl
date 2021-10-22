@@ -1,38 +1,54 @@
-your individual chat here
+<a href="/logout"  class="btn btn-dark">Logout</a>
+<a href="/matching"  class="btn btn-info">Home</a> 
+<a href="/chats" class="btn btn-success">All Chats</a>
+<h1 class="fancyFont2">Your individual chat here: </h1>
 
 @model Message
-
-@{
-    if(ViewBag.User.UserId == ViewBag.Conversation.SenderId && !ViewBag.Conversation.SenderReady)
-    {
-        <a href="/chats/@ViewBag.Conversation.ConversationId/ready" class="btn btn-sm btn-warning">ready to mingl</a>
-    }
-    else if(ViewBag.User.UserId == ViewBag.Conversation.ReceiverId && !ViewBag.Conversation.ReceiverReady)
-    {
-        <a href="/chats/@ViewBag.Conversation.ConversationId/ready" class="btn btn-sm btn-warning">ready to mingl</a>
-    }
-}
-
-@{
-    if(ViewBag.Conversation.SenderReady && ViewBag.Conversation.ReceiverReady)
-    {
-        <span>location ready to be shared</span>
-    }
-}
-
-<ul>
     @{
-        foreach(Message mess in ViewBag.ChatMessages)
+        if(ViewBag.User.UserId == ViewBag.Conversation.SenderId && !ViewBag.Conversation.SenderReady)
         {
-            string who = mess.UserId == ViewBag.User.UserId ? "you" : mess.Sender.Name;
-            <li>@who: @mess.Text</li>
+            <a href="/chats/@ViewBag.Conversation.ConversationId/ready" class="btn btn-lg bg-light border-danger text-danger fancyFont2">ready to mingl</a>
+        }
+        else if(ViewBag.User.UserId == ViewBag.Conversation.ReceiverId && !ViewBag.Conversation.ReceiverReady)
+        {
+            <a href="/chats/@ViewBag.Conversation.ConversationId/ready" class="btn btn-lg bg-light border-danger text-danger fancyFont2">ready to mingl</a>
         }
     }
-</ul>
+    @{
+        if(ViewBag.Conversation.SenderReady && ViewBag.Conversation.ReceiverReady)
+        {
+            <h1>YOU SHOULD GO TO WHIRLYBALL!!!! </h1>
+        }
+    }
 
-<form asp-action="SendChat" asp-controller="Home" method="post">
-    <input type="hidden" asp-for="ConversationId" value="@ViewBag.Conversation.ConversationId">
-    <input type="hidden" asp-for="UserId" value="@ViewBag.User.UserId">
+<div class="shadow overflow-auto h-20 rounded">
+    <ul>
+        <br>
+        @{
+            foreach(Message mess in ViewBag.ChatMessages)
+            {
+                string who = mess.UserId == ViewBag.User.UserId ? "You" : mess.Sender.Name;
+                if(who == "You")
+                {
+                    <div class="message mb-5">
+                        <p class="p-2 bg-secondary border border-danger text-white rounded float-right mr-5"><strong>@who:</strong> @mess.Text</p><br>
+                    </div>
+                }
+                else
+                {
+                    <div class="message mb-5">
+                        <p class="p-2 bg-light border border-danger text-dark rounded float-left"><strong>@who:</strong> @mess.Text</p><br>
+                    </div>
+                }
+            }
+        }
+    </ul>
 
-    <input asp-for="Text" class="form-control">
-</form>
+    <form asp-action="SendChat" asp-controller="Home" method="post">
+        <input type="hidden" asp-for="ConversationId" value="@ViewBag.Conversation.ConversationId">
+        <input type="hidden" asp-for="UserId" value="@ViewBag.User.UserId">
+        <hr>
+        <input class="m-1 w-75 mb-2 rounded float-right" asp-for="Text" class="form-control"><br><br>
+        <input type="submit" value="Send" class="btn btn-primary rounded float-right">
+    </form>
+</div>

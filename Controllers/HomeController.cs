@@ -156,7 +156,7 @@ namespace Mingl.Contollers
 
             _context.SaveChanges();
 
-            return RedirectToAction("Dashboard");
+            return RedirectToAction("MatchingMain");
         }
 
 
@@ -304,6 +304,7 @@ namespace Mingl.Contollers
                 ViewBag.ChatMessages = _context.Messages
                     .Include(mess => mess.Sender)
                     .Where(mess => mess.ConversationId == id)
+                    .OrderBy(mess => mess.CreatedAt)
                     .ToList();
 
                 return View();
@@ -352,6 +353,20 @@ namespace Mingl.Contollers
             _context.SaveChanges();
             return RedirectToAction("IndividualChat", new {id = id});
         }
+
+
+
+        [HttpGet("/deleteMatch/{ConversationId}")]
+        public IActionResult deleteMatch(int ConversationId)
+        {
+            Conversation del = _context.Conversations
+                .FirstOrDefault(conv => conv.ConversationId == ConversationId);
+            _context.Conversations.Remove(del);
+            _context.SaveChanges();
+            return RedirectToAction("AllChats");
+        }
+
+
 
         [HttpGet("logout")]
         public IActionResult Logout()
