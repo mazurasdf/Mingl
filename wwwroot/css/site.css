@@ -1,5 +1,9 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
+*{
+  margin: 0px;
+  padding: 0px;
+}
 #experiment{
   width: 60%;
   transition-property: background-color, width;
@@ -20,6 +24,10 @@ for details on configuring this project to bundle and minify static web assets. 
 .fancyFont2{
   font-family: 'Lobster', cursive;
 }
+.fancyFont3{
+  font-family: 'ABeeZee', sans-serif;
+  color: #420524;
+}
 body{
   background-image: url("https://images.unsplash.com/photo-1519751138087-5bf79df62d5b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80");
   background-size: cover;
@@ -36,7 +44,60 @@ body{
 #coolbutton:hover{
   background-color: #7d022f;
 }
+button{
+  font-family: 'Lobster', cursive;
+}
+a{
+  font-family: 'Lobster', cursive;
+}
+#yaybutton{
+  background-color: #1aebd6;
+  transition: background-color;
+  transition-duration: .5s;
+  transition-timing-function: ease-in;
+}
 
+#yaybutton:hover{
+  background-color: #13f24f;
+
+}
+
+#naybutton{
+  background-color: #f55f96;
+  transition: background-color;
+  transition-duration: .5s;
+  transition-timing-function: ease-in;
+}
+
+#naybutton:hover{
+  background-color: #a60842;
+}
+
+#matchWrapper{
+  display: flex;
+  justify-content: center;
+}
+
+#matchCard{
+  border: 3px solid #20054a;
+  border-radius: 3px;
+  text-align: center;
+  background: rgba(237, 204, 217, 0.4);
+  width: 80%;
+  min-height: 25%;
+  align-items: center;
+  padding: 10px;
+  margin: 20px;
+}
+#matchContentFlex{
+  display: flex;
+  justify-content: space-around;
+}
+
+h2#matchCard{
+  font-family: 'Lobster' cursive;
+
+}
 
 .pageColumn{
   width: 40%;
@@ -45,6 +106,16 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+}
+img{
+  width: 30%;
+  margin: 10px;
+}
+#navBarMatch{
+  margin: 15px;
+  display: flex;
+  align-content: space-around;
+  justify-content: flex-end;
 }
 
 
@@ -100,11 +171,7 @@ html {
   min-height: 100%;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-  font-family: 'Ubuntu', sans-serif;
-}
+
 .footer {
   position: absolute;
   bottom: 0;
