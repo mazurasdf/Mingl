@@ -9,5 +9,3 @@ appsettings.json
 Mingl.csproj
 
 obj/
-
-wwwroot/images/*
